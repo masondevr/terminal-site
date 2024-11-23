@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const terminal = document.getElementById('terminal');
     const output = document.getElementById('output');
+    const commandInput = document.getElementById('commandInput');
+    const terminal = document.getElementById('terminal');
     const content = document.getElementById('content');
+  
+    let currentDirectory = '~'; // Start in the home directory
   
     const commands = {
       help: () => {
@@ -12,63 +15,62 @@ document.addEventListener('DOMContentLoaded', () => {
     - clear: Clear the terminal`;
       },
       about: () => {
+        changeDirectory('about');
         content.innerHTML = `<h2>About Me</h2><p>This is the about page content.</p>`;
         showMainContent();
-        return `Loaded 'about' page.`;
+        return '';
       },
       contact: () => {
+        changeDirectory('contact');
         content.innerHTML = `<h2>Contact</h2><p>This is the contact page content.</p>`;
         showMainContent();
-        return `Loaded 'contact' page.`;
+        return '';
       },
       projects: () => {
+        changeDirectory('projects');
         content.innerHTML = `<h2>Projects</h2><p>This is the projects page content.</p>`;
         showMainContent();
-        return `Loaded 'projects' page.`;
+        return '';
       },
       clear: () => {
         output.innerHTML = '';
-        addNewPrompt();
         return '';
       },
     };
   
-    function addNewPrompt() {
-      // Add a new prompt line
-      const prompt = document.createElement('div');
-      prompt.className = 'prompt';
-      prompt.innerHTML = `$ <span class="input-span" contenteditable="true" id="commandInput"></span>`;
-      output.appendChild(prompt);
-      scrollToBottom();
-      focusOnInput();
+    function executeCommand(command) {
+      const response = commands[command]
+        ? commands[command]()
+        : `Unknown command: '${command}'`;
+  
+      // Append the command to the output
+      appendToOutput(`${getPrompt()} $ ${command}`);
+      if (response) appendToOutput(response);
     }
   
-    function focusOnInput() {
-      const commandInput = document.getElementById('commandInput');
-      commandInput.focus();
-  
-      commandInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault(); // Prevent newline in contenteditable
-          const command = commandInput.innerText.trim();
-          const response = commands[command]
-            ? commands[command]()
-            : `Unknown command: '${command}'`;
-  
-          // Lock the current input and display the response
-          commandInput.setAttribute('contenteditable', 'false');
-          const responseLine = document.createElement('div');
-          responseLine.textContent = response;
-          output.appendChild(responseLine);
-  
-          // Add a new input prompt
-          addNewPrompt();
-        }
-      });
+    function appendToOutput(text) {
+      const line = document.createElement('div');
+      line.textContent = text;
+      output.appendChild(line);
+      scrollToBottom();
     }
   
     function scrollToBottom() {
-      terminal.scrollTop = terminal.scrollHeight;
+      output.scrollTop = output.scrollHeight;
+    }
+  
+    function changeDirectory(newDir) {
+      currentDirectory = newDir === '~' ? '~' : `~/${newDir}`;
+      updatePrompt(); // Update the prompt after directory change
+    }
+  
+    function getPrompt() {
+      return `masondv.com ${currentDirectory}`;
+    }
+  
+    function updatePrompt() {
+      const promptPrefix = document.querySelector('.prompt-prefix');
+      promptPrefix.textContent = getPrompt();
     }
   
     function showMainContent() {
@@ -79,7 +81,30 @@ document.addEventListener('DOMContentLoaded', () => {
       terminal.style.height = '20%';
     }
   
-    // Initialize the first prompt
-    focusOnInput();
+    // Initialize prompt prefix and input on load
+    const promptPrefix = document.createElement('span');
+    promptPrefix.className = 'prompt-prefix';
+    promptPrefix.textContent = getPrompt();
+  
+    const promptDollar = document.createElement('span');
+    promptDollar.className = 'prompt-dollar';
+    promptDollar.textContent = '$';
+  
+    const inputLine = document.getElementById('input-line');
+    inputLine.insertBefore(promptPrefix, commandInput);
+    inputLine.insertBefore(promptDollar, commandInput);
+  
+    // Focus input on page load
+    commandInput.focus();
+  
+    // Listen for Enter key on the input line
+    commandInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault(); // Prevent newline in contenteditable
+        const command = commandInput.innerText.trim();
+        commandInput.innerText = ''; // Clear the input field
+        if (command) executeCommand(command);
+      }
+    });
   });
   

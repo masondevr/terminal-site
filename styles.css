@@ -4,64 +4,82 @@ body {
     font-family: 'Courier New', monospace;
     background: #1e1e1e;
     color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
     overflow: hidden;
   }
   
-  /* Terminal Styles */
+  /* Terminal */
   #terminal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    width: 500%; /* Increased width */
+    height: 500%; /* Increased height */
     background: #000;
-    color: #00ff00;
-    padding: 10px;
-    font-size: 14px;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
+    font-size: 14px;
+    border: 2px solid #555;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin: auto; /* Center horizontally and vertically */
+    overflow: hidden;
+  
+    /* Max size constraints for smaller screens */
+    max-width: 90%;
+    max-height: 80%;
   }
   
   #output {
-    flex: 1;
-    white-space: pre-line;
+    flex: 1; /* Takes up the space above the input line */
     overflow-y: auto;
+    padding: 10px;
+    white-space: pre-wrap;
   }
   
-  .prompt {
+  #input-line {
     display: flex;
     align-items: center;
+    padding: 10px;
+    background: #111;
+    border-top: 1px solid #555;
   }
   
-  .input-span {
-    display: inline-block;
+  .prompt-prefix {
+    color: #00ff00;
+    margin-right: 5px;
+  }
+  
+  .prompt-dollar {
+    color: #00ff00;
+    margin-right: 5px;
+  }
+  
+  #commandInput {
+    flex: 1;
     outline: none;
     color: #00ff00;
     background: transparent;
     border: none;
     font-family: inherit;
     font-size: inherit;
-    margin-left: 5px;
-    flex-grow: 1;
-    cursor: text;
+    white-space: nowrap;
+    overflow: hidden;
   }
   
-  .input-span:focus {
+  #commandInput:focus {
     outline: none;
   }
   
-  /* Main Content Area (Initially Hidden) */
+  /* Main Content */
   #content {
-    display: none; /* Hidden initially */
+    display: none; /* Initially hidden */
     padding: 20px;
-    min-height: 60vh;
     background: #fff;
     color: #000;
     overflow-y: auto;
   }
   
-  /* Terminal in Persistent Mode */
   .terminal-bottom {
     position: fixed;
     bottom: 0;
