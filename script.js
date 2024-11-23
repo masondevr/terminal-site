@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
       prompt.className = 'prompt';
       prompt.innerHTML = `$ <span class="input-span" contenteditable="true" id="commandInput"></span>`;
       output.appendChild(prompt);
+      scrollToBottom();
       focusOnInput();
     }
   
@@ -48,29 +49,37 @@ document.addEventListener('DOMContentLoaded', () => {
   
       commandInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-          e.preventDefault(); // Prevent newline in the contenteditable element
+          e.preventDefault(); // Prevent newline in contenteditable
           const command = commandInput.innerText.trim();
           const response = commands[command]
             ? commands[command]()
             : `Unknown command: '${command}'`;
-          commandInput.setAttribute('contenteditable', 'false'); // Lock the current input
+  
+          // Lock the current input and display the response
+          commandInput.setAttribute('contenteditable', 'false');
           const responseLine = document.createElement('div');
           responseLine.textContent = response;
           output.appendChild(responseLine);
-          addNewPrompt(); // Add a new input prompt
+  
+          // Add a new input prompt
+          addNewPrompt();
         }
       });
     }
   
+    function scrollToBottom() {
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+  
     function showMainContent() {
-      // Show content area and move terminal to the bottom
+      // Show content area and resize terminal
       content.classList.remove('hidden');
       content.style.display = 'block';
       terminal.classList.add('terminal-bottom');
       terminal.style.height = '20%';
     }
   
-    // Initialize first prompt
+    // Initialize the first prompt
     focusOnInput();
   });
   
