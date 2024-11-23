@@ -7,7 +7,7 @@ body {
     overflow: hidden;
   }
   
-  /* Terminal (Full-Screen Initially) */
+  /* Terminal Styles */
   #terminal {
     position: fixed;
     top: 0;
@@ -18,23 +18,37 @@ body {
     color: #00ff00;
     padding: 10px;
     font-size: 14px;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
   }
   
   #output {
     flex: 1;
-    overflow-y: auto;
     white-space: pre-line;
+    overflow-y: auto;
   }
   
-  #commandInput {
-    width: 100%;
-    background: none;
-    color: #00ff00;
-    border: none;
+  .prompt {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-span {
+    display: inline-block;
     outline: none;
-    font-size: 14px;
+    color: #00ff00;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    margin-left: 5px;
+    flex-grow: 1;
+    cursor: text;
+  }
+  
+  .input-span:focus {
+    outline: none;
   }
   
   /* Main Content Area (Initially Hidden) */

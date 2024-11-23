@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const commandInput = document.getElementById('commandInput');
+    const terminal = document.getElementById('terminal');
     const output = document.getElementById('output');
     const content = document.getElementById('content');
-    const terminal = document.getElementById('terminal');
   
     const commands = {
       help: () => {
@@ -29,9 +28,39 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       clear: () => {
         output.innerHTML = '';
+        addNewPrompt();
         return '';
       },
     };
+  
+    function addNewPrompt() {
+      // Add a new prompt line
+      const prompt = document.createElement('div');
+      prompt.className = 'prompt';
+      prompt.innerHTML = `$ <span class="input-span" contenteditable="true" id="commandInput"></span>`;
+      output.appendChild(prompt);
+      focusOnInput();
+    }
+  
+    function focusOnInput() {
+      const commandInput = document.getElementById('commandInput');
+      commandInput.focus();
+  
+      commandInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault(); // Prevent newline in the contenteditable element
+          const command = commandInput.innerText.trim();
+          const response = commands[command]
+            ? commands[command]()
+            : `Unknown command: '${command}'`;
+          commandInput.setAttribute('contenteditable', 'false'); // Lock the current input
+          const responseLine = document.createElement('div');
+          responseLine.textContent = response;
+          output.appendChild(responseLine);
+          addNewPrompt(); // Add a new input prompt
+        }
+      });
+    }
   
     function showMainContent() {
       // Show content area and move terminal to the bottom
@@ -41,14 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
       terminal.style.height = '20%';
     }
   
-    commandInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const command = commandInput.value.trim();
-        const response = commands[command] ? commands[command]() : `Unknown command: '${command}'`;
-        output.innerHTML += `$ ${command}\n${response}\n\n`;
-        output.scrollTop = output.scrollHeight; // Auto-scroll
-        commandInput.value = '';
-      }
-    });
+    // Initialize first prompt
+    focusOnInput();
   });
   
