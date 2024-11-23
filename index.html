@@ -8,15 +8,7 @@
 </head>
 <body>
   <div id="app">
-    <header>
-      <h1>Interactive Shell</h1>
-    </header>
-    <main>
-      <div id="content">
-        <h2>Welcome</h2>
-        <p>Use the terminal below to explore the site.</p>
-      </div>
-    </main>
+    <!-- Terminal (Full-Screen Initially) -->
     <div id="terminal">
       <div id="output">
         Welcome to My Interactive Shell Website!<br>
@@ -26,6 +18,11 @@
       </div>
       <input type="text" id="commandInput" placeholder="Type a command..." autofocus>
     </div>
+
+    <!-- Main Content (Hidden Initially) -->
+    <main id="content" class="hidden">
+      <!-- Content will load dynamically -->
+    </main>
   </div>
   <script src="script.js"></script>
 </body>
