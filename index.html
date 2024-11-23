@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Shell Website</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>Interactive Shell</h1>
+    </header>
+    <main>
+      <div id="content">
+        <h2>Welcome</h2>
+        <p>Use the terminal below to explore the site.</p>
+      </div>
+    </main>
+    <div id="terminal">
+      <div id="output">
+        Welcome to My Interactive Shell Website!<br>
+        Type `help` for a list of commands.<br>
+        <br>
+        $ 
+      </div>
+      <input type="text" id="commandInput" placeholder="Type a command..." autofocus>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
